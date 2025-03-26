@@ -13,6 +13,7 @@ let package = Package(
             name: "UIKitTools",
             targets: ["UIKitTools"]),
     ],
+    dependencies: [],
     targets: [
         .target(
             name: "UIKitTools"),
