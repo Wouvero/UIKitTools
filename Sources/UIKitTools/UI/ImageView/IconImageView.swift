@@ -55,6 +55,11 @@ public class IconImageView: UIImageView {
         updateImage()
     }
     
+    /// Change icon configuration
+    public func setConfig(config: UIImage.SymbolConfiguration) {
+        self.currentConfig = config
+        updateImage()
+    }
     
     // MARK: - Private Methods
     private func updateImage() {
