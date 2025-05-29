@@ -1,32 +1,46 @@
 //
 //
 //
-// Created by: Patrik Drab on 02/03/2025
-// Copyright (c) 2025 UIKitPro
+// Created by: Patrik Drab on 29/05/2025
+// Copyright (c) 2025 UIKitTools
 //
 //
 
 import UIKit
 
-
-
 public class IconImageView: UIImageView {
-    public static let defaultIconConfiguration = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .medium)
     // MARK: - Properties
-    private var currentConfig: UIImage.SymbolConfiguration
+    private var pointSize: CGFloat
+    private var weight: UIImage.SymbolWeight
+    private var scale: UIImage.SymbolScale
+    
     private var systemName: String
     private var color: UIColor
     
     // MARK: - Initializer
-    public init(systemName: String,
-                config: UIImage.SymbolConfiguration = IconImageView.defaultIconConfiguration,
-                tintColor: UIColor = UIColor.black) {
-        self.currentConfig = config
+    init(
+        systemName: String,
+        color: UIColor,
+        pointSize: CGFloat = 20,
+        weight: UIImage.SymbolWeight = .regular,
+        scale: UIImage.SymbolScale = .medium
+    ) {
         self.systemName = systemName
-        self.color = tintColor
+        self.color = color
+        self.pointSize = pointSize
+        self.weight = weight
+        self.scale = scale
         
-        let imageIcon = UIImage(systemName: systemName, withConfiguration: config)?
-            .withTintColor(color, renderingMode: .alwaysOriginal)
+        let imageConfiguration = UIImage.SymbolConfiguration(
+            pointSize: pointSize,
+            weight: weight,
+            scale: scale
+        )
+        
+        let imageIcon = UIImage(
+            systemName: systemName,
+            withConfiguration: imageConfiguration
+        )?.withTintColor(color, renderingMode: .alwaysOriginal)
         
         super.init(image: imageIcon)
     }
@@ -34,37 +48,56 @@ public class IconImageView: UIImageView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Public Methods
-    public func setSize(pointSize: CGFloat, weight: UIImage.SymbolWeight = .regular, scale: UIImage.SymbolScale = .medium) {
-        let newConfig = UIImage.SymbolConfiguration(pointSize: pointSize, weight: weight, scale: scale)
-        self.currentConfig = newConfig
-        updateImage()
-    }
-    
-    /// Updates the tint color of the icon.
-    public func setTintColor(_ color: UIColor) {
-        self.tintColor = color
-        updateImage()
-    }
-    
-    /// Change icon with configuration
-    public func setIcon(systemName: String, config: UIImage.SymbolConfiguration = IconImageView.defaultIconConfiguration) {
+}
+
+// MARK: - Public API
+extension IconImageView {
+    public func setIcon(systemName: String) {
         self.systemName = systemName
-        self.currentConfig = config
-        updateImage()
+        updateIcon()
     }
     
-    /// Change icon configuration
-    public func setConfig(config: UIImage.SymbolConfiguration) {
-        self.currentConfig = config
-        updateImage()
+    public func setColor(_ color: UIColor) {
+        self.color = color
+        updateIcon()
     }
     
-    // MARK: - Private Methods
-    private func updateImage() {
-        let imageIcon = UIImage(systemName: systemName, withConfiguration: currentConfig)?
-            .withTintColor(tintColor, renderingMode: .alwaysOriginal)
+    public func setSize(_ pointSize: CGFloat) {
+        self.pointSize = pointSize
+        updateIcon()
+    }
+    
+    public func setWeight(_ weight: UIImage.SymbolWeight) {
+        self.weight = weight
+        updateIcon()
+    }
+    
+    public func setScale(_ scale: UIImage.SymbolScale) {
+        self.scale = scale
+        updateIcon()
+    }
+    
+    public func setConfig(pointSize: CGFloat, weight: UIImage.SymbolWeight, scale: UIImage.SymbolScale) {
+        self.pointSize = pointSize
+        self.weight = weight
+        self.scale = scale
+        updateIcon()
+    }
+    
+    private func updateIcon() {
+        let imageConfiguration = UIImage.SymbolConfiguration(
+            pointSize: pointSize,
+            weight: weight,
+            scale: scale
+        )
+        
+        let imageIcon = UIImage(
+            systemName: systemName,
+            withConfiguration: imageConfiguration
+        )?.withTintColor(color, renderingMode: .alwaysOriginal)
+        
         self.image = imageIcon
     }
 }
+
+
